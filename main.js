@@ -267,7 +267,7 @@ var maxSpeed = 175;
 var ASSET_MANAGER = new AssetManager();
 
 
-ASSET_MANAGER.queueDownload("./img/stars.jpg");
+ASSET_MANAGER.queueDownload("./stars.jpg");
 
 ASSET_MANAGER.downloadAll(function () {
     //console.log("starting up da sheild");
