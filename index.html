@@ -1,0 +1,34 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>7-Way Tag</title>
+    <script type="text/javascript" src="./assetmanager.js"></script>
+    <script type="text/javascript" src="./gameengine.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+</head>
+<body>
+    <canvas id="gameWorld" width="1100" height="900" style="border: 1px solid white; background: black"></canvas>
+    <div><font size = "6">The matchup chart looks like this:</font>
+    <br><font size = "6">Run from -> Team -> Attack</font>
+    <br>Pink, Blue, Orange -> <strong>Red</strong> -> Yellow, Green, Purple
+    <br>Blue, Orange, Red -> <strong>Yellow</strong> -> Green, Purple, Pink
+    <br>Orange, Red, Yellow -> <strong>Green</strong> -> Purple, Pink, Blue
+    <br>Red, Yellow, Green -> <strong>Purple</strong> -> Pink, Blue, Orange
+    <br>Yellow, Green, Purple -> <strong>Pink</strong> -> Blue, Orange, Red
+    <br>Green, Purple, Pink -> <strong>Blue</strong> -> Orange, Red, Yellow
+    <br>Purple, Pink, Blue -> <strong>Orange</strong> -> Red, Yellow, Green
+    <br>Red, Orange, Yellow, Green, Blue, Purple, Pink -> <strong>White</strong> -> 
+    <br> White is a shy team, will only run away from everybody, and has an extended vision radius
+    <br><br> Red runs from Blue, Orange, Pink
+    <br> Red attacks Yellow, Green, Purple
+    <br> <br> White will start with ten circles
+    <br> Every other color will start with six circles
+    <br> If a color is tagged by an attacking circle (i.e. Red tags Green) the tagged circle will convert to the attackers team (Green joins Red team)
+    <br> The decision of which circle joins which team when collision occurs is decided by the matchup chart
+    <br> The larger canvas allows for multiple "chases" to happen at once
+</div>
+
+</body>
+</html>
