@@ -1,6 +1,71 @@
 
 // GameBoard code below
 
+var socket = io.connect("http://24.16.255.56:8888");
+
+window.onload = function () {
+    console.log("starting up da sheild");
+    var messages = [];
+    var field = document.getElementById("7-wayTag");
+    var username = document.getElementById("ThiasDavid");
+
+    // socket.on("ping", function (ping) {
+    //     console.log(ping);
+    //     socket.emit("pong");
+    // });
+
+    socket.on('load', function (data) {
+        console.log(data.length +" messages synced.");
+        messages = data;
+        var html = '';
+        for (var i = 0; i < messages.length; i++) {
+            html += '<b>' + (messages[i].username ? messages[i].username : 'Server') + ': </b>';
+            html += messages[i].message + '<br />';
+        }
+        content.innerHTML = html;
+        content.scrollTop = content.scrollHeight;
+    });
+
+    socket.on('save', function (data) {
+        if (data.message) {
+            messages.push(data);
+            // update html
+            var html = '';
+            for (var i = 0; i < messages.length; i++) {
+                html += '<b>' + (messages[i].username ? messages[i].username : 'Server') + ': </b>';
+                html += messages[i].message + '<br />';
+            }
+            content.innerHTML = html;
+            content.scrollTop = content.scrollHeight;
+        } else {
+            console.log("There is a problem:", data);
+        }
+    });
+
+
+function loadState(ListOfCircles){
+    var list = [];
+    var circle = new Circle(game);
+    for( x = 0 ; x < ListOfCircles.length ; x++){
+        circle.x = ListOfCircles[x].x;
+        circle.y = ListOfCircles[x].y;
+        circle.team = ListOfCircles[x].team;
+        circle.velocity = ListOfCircles[x].velocity;
+        circle.visualRadius = ListOfCircles[x].visualRadius;
+        list.add(circle);
+    }
+    return list;
+}
+
+function saveState(){
+    var list = [];
+    for (const ent in this.gameEngine.entities){
+        entity = gameEngine.entities[ent];
+        list.add(entity);
+    }
+    return list;
+}
+
 function distance(a, b) {
     var dx = a.x - b.x;
     var dy = a.y - b.y;
@@ -312,3 +377,4 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     gameEngine.start();
 });
+
