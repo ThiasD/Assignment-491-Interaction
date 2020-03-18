@@ -43,7 +43,7 @@ window.onload = function () {
     });
 
 
-function loadState(ListOfCircles){
+function loadState(game, ListOfCircles){
     var list = [];
     var circle = new Circle(game);
     for( x = 0 ; x < ListOfCircles.length ; x++){
@@ -57,10 +57,10 @@ function loadState(ListOfCircles){
     return list;
 }
 
-function saveState(){
+function saveState(game){
     var list = [];
-    for (const ent in this.gameEngine.entities){
-        entity = gameEngine.entities[ent];
+    for (const ent in game.entities){
+        entity = game.entities[ent];
         list.add(entity);
     }
     return list;
