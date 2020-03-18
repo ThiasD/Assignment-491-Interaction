@@ -377,4 +377,4 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     gameEngine.start();
 });
-
+}
