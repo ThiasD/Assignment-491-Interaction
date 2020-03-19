@@ -5,66 +5,10 @@ var socket = io.connect("http://24.16.255.56:8888");
 
 window.onload = function () {
     console.log("starting up da sheild");
-    var messages = [];
-    var field = document.getElementById("7-wayTag");
-    var username = document.getElementById("ThiasDavid");
+    var field = document.getElementById("Something");
+    var username = document.getElementById("Thias David");
 
-    // socket.on("ping", function (ping) {
-    //     console.log(ping);
-    //     socket.emit("pong");
-    // });
-
-    socket.on('load', function (data) {
-        console.log(data.length +" messages synced.");
-        messages = data;
-        var html = '';
-        for (var i = 0; i < messages.length; i++) {
-            html += '<b>' + (messages[i].username ? messages[i].username : 'Server') + ': </b>';
-            html += messages[i].message + '<br />';
-        }
-        content.innerHTML = html;
-        content.scrollTop = content.scrollHeight;
-    });
-
-    socket.on('save', function (data) {
-        if (data.message) {
-            messages.push(data);
-            // update html
-            var html = '';
-            for (var i = 0; i < messages.length; i++) {
-                html += '<b>' + (messages[i].username ? messages[i].username : 'Server') + ': </b>';
-                html += messages[i].message + '<br />';
-            }
-            content.innerHTML = html;
-            content.scrollTop = content.scrollHeight;
-        } else {
-            console.log("There is a problem:", data);
-        }
-    });
-
-
-function loadState(game, ListOfCircles){
-    var list = [];
-    var circle = new Circle(game);
-    for( x = 0 ; x < ListOfCircles.length ; x++){
-        circle.x = ListOfCircles[x].x;
-        circle.y = ListOfCircles[x].y;
-        circle.team = ListOfCircles[x].team;
-        circle.velocity = ListOfCircles[x].velocity;
-        circle.visualRadius = ListOfCircles[x].visualRadius;
-        list.add(circle);
-    }
-    return list;
-}
-
-function saveState(game){
-    var list = [];
-    for (const ent in game.entities){
-        entity = game.entities[ent];
-        list.add(entity);
-    }
-    return list;
-}
+    
 
 function distance(a, b) {
     var dx = a.x - b.x;
@@ -311,6 +255,10 @@ Circle.prototype.update = function () {
 
     this.velocity.x -= (1 - friction) * this.game.clockTick * this.velocity.x;
     this.velocity.y -= (1 - friction) * this.game.clockTick * this.velocity.y;
+
+
+
+
 };
 
 Circle.prototype.draw = function (ctx) {
@@ -341,11 +289,13 @@ ASSET_MANAGER.downloadAll(function () {
 
 
     var gameEngine = new GameEngine();
+    var list = [];
 
     for(var x = 0 ; x < 10 ; x++){ // will make 10 neutral circles
         var circle = new Circle(gameEngine);
         circle.setTeam("White");
         gameEngine.addEntity(circle);
+        list.push(circle);
     }
 
     for (var i = 0; i < 42; i++) { // Will make 7 different teams of 6 circles
@@ -373,8 +323,62 @@ ASSET_MANAGER.downloadAll(function () {
         }
 
         gameEngine.addEntity(circle);
+        list.push(circle);
     }
+    
+    var save = document.getElementById("s");
+    var load = document.getElementById("l");
+
+
+socket.on('load', function (data) {
+    gameEngine.entities = [];
+    for (x = 0 ; x < 52 ; x++){ // I have 52 circles in my game so I can hard code that in
+        var circle = new Circle(gameEngine);
+        
+        circle.setTeam((data[x])[0]); // add the data[x] array to the circle
+        circle.x = (data[x])[1];
+        circle.y = (data[x])[2];
+        circle.velocity = (data[x])[3];
+
+        gameEngine.addEntity(circle); // add circle back to the game world
+    }
+});
+
+socket.on('save', function (data) {
+    var holdState = [];
+    var holdCircle = [];
+    for(const ent in gameEngine.entities){
+        holdCircle = [];
+        entity = gameEngine.entities[ent]; // access the current circles stuff
+        
+        holdCircle.push(entity.team); // store team, position, and velocity in a array
+        holdCircle.push(entity.x);
+        holdCircle.push(entity.y);
+        holdCircle.push(entity.velocity);
+
+        holdState.push(holdCircle); // store the circle array in a bigger array
+    }
+});
+
+
+save.onClick = function(){
+    console.log("Entered Save");
+    socket.emit('save', {studentname: 'Thias David', statename: 'State Saved', data: holdState });
+    console.log("Finished Save");
+}
+
+load.onClick = function (){
+    console.log("Entered Load");
+    socket.emit('load', {studentname: 'Thias David', statename: 'State Loaded'});
+    console.log("Finished Load")
+}
+
+
+
+
     gameEngine.init(ctx);
     gameEngine.start();
 });
 }
+
+

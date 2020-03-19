@@ -30,6 +30,9 @@ Timer.prototype.tick = function () {
 
 function GameEngine() {
     this.entities = [];
+
+    this.keyDownList = [];
+
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
@@ -61,35 +64,55 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
 
-    var getXandY = function (e) {
-        var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
-        var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
 
-        return { x: x, y: y };
-    }
 
-    this.ctx.canvas.addEventListener("mousemove", function (e) {
-        //console.log(getXandY(e));
-        that.mouse = getXandY(e);
-    }, false);
 
-    this.ctx.canvas.addEventListener("click", function (e) {
-        //console.log(getXandY(e));
-        that.click = getXandY(e);
-    }, false);
 
-    this.ctx.canvas.addEventListener("wheel", function (e) {
-        //console.log(getXandY(e));
-        that.wheel = e;
-        //       console.log(e.wheelDelta);
-        e.preventDefault();
-    }, false);
+    // this.ctx.canvas.addEventListener('keydown', function (e){
 
-    this.ctx.canvas.addEventListener("contextmenu", function (e) {
-        //console.log(getXandY(e));
-        that.rightclick = getXandY(e);
-        e.preventDefault();
-    }, false);
+    //     if(e.keyCode === 's'){
+    //         console.log("Entered Save");
+    //         socket.emit('save', {studentname: 'Thias David', statename: 'State Saved', data: holdState });
+    //         console.log("Finished Save");
+    //     }
+
+    //     if(e.keyCode === 'l'){
+    //         console.log("Entered Load");
+    //         socket.emit('load', {studentname: 'Thias David', statename: 'State Loaded'});
+    //         console.log("Finished Load")
+    //     }
+
+    // });
+
+    // var getXandY = function (e) {
+    //     var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+    //     var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+
+    //     return { x: x, y: y };
+    // }
+
+    // this.ctx.canvas.addEventListener("mousemove", function (e) {
+    //     //console.log(getXandY(e));
+    //     that.mouse = getXandY(e);
+    // }, false);
+
+    // this.ctx.canvas.addEventListener("click", function (e) {
+    //     //console.log(getXandY(e));
+    //     that.click = getXandY(e);
+    // }, false);
+
+    // this.ctx.canvas.addEventListener("wheel", function (e) {
+    //     //console.log(getXandY(e));
+    //     that.wheel = e;
+    //     //       console.log(e.wheelDelta);
+    //     e.preventDefault();
+    // }, false);
+
+    // this.ctx.canvas.addEventListener("contextmenu", function (e) {
+    //     //console.log(getXandY(e));
+    //     that.rightclick = getXandY(e);
+    //     e.preventDefault();
+    // }, false);
 
     console.log('Input started');
 }
